@@ -1,0 +1,66 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20">
+    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Edit your listing</h2>
+
+        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="space-y-6 group needs-validation" novalidate>
+            
+            <div>
+                <label for="name" class="block text-sm font-semibold text-gray-900 mb-2">Title</label>
+                <input type="text" id="name" name="listing[name]" value="<%= listing.name %>" required
+                    class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500">
+                <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Please enter a catchy title.</p>
+                <p class="hidden group-[.was-validated]:peer-valid:block text-green-500 text-sm mt-1">✅ Looks good!</p>
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm font-semibold text-gray-900 mb-2">Description</label>
+                <textarea id="description" name="listing[description]" rows="4" required
+                    class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors resize-none group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500"><%= listing.description %></textarea>
+                <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ A short description is required.</p>
+                <p class="hidden group-[.was-validated]:peer-valid:block text-green-500 text-sm mt-1">✅ Looks good!</p>
+            </div>
+
+            <div>
+                <label for="image" class="block text-sm font-semibold text-gray-900 mb-2">Image URL</label>
+                <input type="url" id="image" name="listing[image]" value="<%= listing.image %>" 
+                    class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors group-[.was-validated]:valid:border-green-500 group-[.was-validated]:invalid:border-red-500">
+                <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Please enter a valid URL.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="price" class="block text-sm font-semibold text-gray-900 mb-2">Price (per night)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-3.5 text-gray-500 font-semibold z-10">₹</span>
+                        <input type="number" id="price" name="listing[price]" value="<%= listing.price %>" required min="1"
+                            class="peer w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500">
+                        <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Required.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="location" class="block text-sm font-semibold text-gray-900 mb-2">Location</label>
+                        <input type="text" id="location" name="listing[location]" value="<%= listing.location %>" required
+                        class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500">
+                    <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Required.</p>
+                </div>
+
+                <div>
+                    <label for="country" class="block text-sm font-semibold text-gray-900 mb-2">Country</label>
+                    <input type="text" id="country" name="listing[country]" value="<%= listing.country %>" required
+                        class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500">
+                    <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Required.</p>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" 
+                    class="w-full bg-linear-to-r from-[#FF385C] to-[#D70466] text-white font-bold text-lg py-3.5 rounded-lg shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-200">
+                    Update Listing
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

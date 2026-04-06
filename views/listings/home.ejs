@@ -1,0 +1,32 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="max-w-630 mx-auto px-4 sm:px-6 md:px-10 xl:px-20 mt-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <% for(let listing of allListings) { %>
+            <a href="/listings/<%= listing._id %>" class="group flex-col cursor-pointer no-underline text-gray-900 block">
+                
+                <div class="aspect-square w-full overflow-hidden rounded-xl bg-gray-200 relative">
+                    <img src="<%= listing.image %>" alt="<%= listing.name %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+
+                <div class="flex flex-col mt-3">
+                    <h3 class="font-semibold text-[15px] truncate text-gray-900"><%= listing.location %>, <%= listing.country %></h3>
+                    <span class="text-gray-500 text-[15px] truncate"><%= listing.name %></span>
+                    <div class="flex items-center mt-1">
+                        <span class="font-semibold text-[15px] text-gray-900">₹<%= listing.price.toLocaleString('en-IN') %></span>
+                        <span class="text-gray-900 text-[15px] ml-1">night</span>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+<div class="sticky bottom-10 flex justify-center mt-12 pointer-events-none">
+    <a href="/listings/new" class="pointer-events-auto bg-linear-to-r from-[#FF385C] to-[#D70466] text-white px-6 py-3.5 rounded-full shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200 font-semibold text-[15px] flex items-center gap-2 z-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Add listing
+    </a>
+</div>

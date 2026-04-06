@@ -1,0 +1,153 @@
+<%- layout('layouts/boilerplate') %>
+
+    <div class="max-w-280 mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-20">
+
+        <div class="mb-6">
+            <h1 class="text-3xl sm:text-[32px] font-semibold text-gray-900 mb-2 tracking-tight">
+                <%= listing.name %>
+            </h1>
+            <div class="flex items-center text-[15px] font-medium text-gray-900">
+                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                <span class="underline cursor-pointer">
+                    <%= listing.location %>, <%= listing.country %>
+                </span>
+            </div>
+        </div>
+
+        <div class="w-full h-[50vh] md:h-[60vh] rounded-2xl overflow-hidden mb-10">
+            <img src="<%= listing.image %>" alt="<%= listing.name %>" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
+
+            <div class="lg:col-span-2">
+                
+                <div class="border-b border-gray-200 pb-8 mb-8">
+                    <h2 class="text-[22px] font-semibold text-gray-900 mb-4">Hosted by <%= listing.owner.username %></h2>
+                    <p class="text-gray-700 leading-relaxed text-[16px] whitespace-pre-line">
+                        <%= listing.description %>
+                    </p>
+                </div>
+
+                <% if(currUser) { %>
+                    <div class="border-b border-gray-200 pb-8 mb-8 mt-10">
+                        <h2 class="text-[22px] font-semibold text-gray-900 mb-6">Leave a Review</h2>
+
+                        <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation group" novalidate>
+
+                            <div class="mb-6">
+                                <label class="block text-sm font-semibold text-gray-900 mb-2">Rating</label>
+
+                                <style>
+                                    .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+                                    .star-rating input { position: absolute; opacity: 0; pointer-events: none; }
+                                    .star-rating label { cursor: pointer; color: #D1D5DB; transition: color 0.2s ease-in-out; }
+                                    .star-rating label:hover, .star-rating label:hover~label, .star-rating input:checked~label { color: #FF385C; }
+                                </style>
+
+                                <div class="star-rating gap-1">
+                                    <input type="radio" id="star5" name="review[rating]" value="5" />
+                                    <label for="star5" title="5 stars"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></label>
+                                    <input type="radio" id="star4" name="review[rating]" value="4" />
+                                    <label for="star4" title="4 stars"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></label>
+                                    <input type="radio" id="star3" name="review[rating]" value="3" />
+                                    <label for="star3" title="3 stars"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></label>
+                                    <input type="radio" id="star2" name="review[rating]" value="2" />
+                                    <label for="star2" title="2 stars"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></label>
+                                    <input type="radio" id="star1" name="review[rating]" value="1" checked />
+                                    <label for="star1" title="1 star"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg></label>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="comment" class="block text-sm font-semibold text-gray-900 mb-2">Comments</label>
+                                <textarea id="comment" name="review[comment]" rows="4" required placeholder="How was your stay?"
+                                    class="peer w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#FF385C] outline-none transition-colors resize-none group-[.was-validated]:invalid:border-red-500 group-[.was-validated]:valid:border-green-500"></textarea>
+                                <p class="hidden group-[.was-validated]:peer-invalid:block text-red-500 text-sm mt-1">⚠️ Please write a brief comment.</p>
+                            </div>
+
+                            <button type="submit" class="border border-gray-900 text-gray-900 font-semibold px-6 py-2.5 rounded-lg hover:bg-gray-100 transition-colors">
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+                <% } %>
+
+                <div>
+                    <h2 class="text-[22px] font-semibold text-gray-900 mb-6">All Reviews</h2>
+
+                    <% if(listing.reviews && listing.reviews.length > 0) { %>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <% for(let review of listing.reviews) { %>
+                                <div class="border border-gray-200 rounded-xl p-6 shadow-sm flex flex-col h-full">
+                                    
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold uppercase">
+                                            <%= review.author.username.charAt(0) %>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-semibold text-gray-900 text-[15px]">@<%= review.author.username %></h3>
+                                            <p class="text-xs text-gray-500"><%= review.createdAt ? review.createdAt.toDateString() : 'Recent' %></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center mb-3">
+                                        <% for(let i=1; i <=5; i++) { %>
+                                            <svg class="w-4 h-4 <%= i <= review.rating ? 'text-gray-900' : 'text-gray-300' %>" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        <% } %>
+                                    </div>
+
+                                    <p class="text-gray-800 text-[15px] mb-4 grow">
+                                        <%= review.comment %>
+                                    </p>
+
+                                    <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                                        <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="mt-auto">
+                                            <button type="submit" class="text-sm font-semibold text-[#FF385C] hover:underline">
+                                                Delete Review
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p class="text-gray-500 text-[15px]">No reviews yet. Be the first to leave one!</p>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xl sticky top-28">
+
+                    <div class="flex items-baseline gap-1 mb-6 border-b border-gray-200 pb-6">
+                        <span class="text-[22px] font-semibold text-gray-900">₹<%= listing.price.toLocaleString('en-IN') %></span>
+                        <span class="text-gray-600 text-[15px]">night</span>
+                    </div>
+
+                    <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+                        <div>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 text-center">Manage Listing</p>
+                            <div class="flex flex-col gap-3">
+                                <a href="/listings/<%= listing._id %>/edit" class="w-full text-center bg-gray-100 text-gray-900 font-semibold text-[15px] py-3.5 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 shadow-sm">
+                                    Edit details
+                                </a>
+
+                                <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="w-full">
+                                    <button type="submit" class="w-full text-center bg-[#FF385C] text-white font-semibold text-[15px] py-3.5 rounded-lg hover:bg-[#D70466] transition-colors shadow-sm">
+                                        Delete listing
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% } %>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
