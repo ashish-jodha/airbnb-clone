@@ -1,55 +1,53 @@
-# 🌍 Wanderlust | Full-Stack Airbnb Clone
+# 🌍 Wanderlust | Airbnb Clone
 
 [![Node.js](https://img.shields.io/badge/Node.js-v24_LTS-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-Cloud_Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-> **A production-ready property rental platform.** Engineered from the ground up to demonstrate mastery of the modern Node.js ecosystem, MVC architecture, and secure cloud deployment. 
+> A full-stack property rental web application featuring dynamic listings, user authentication, and secure cloud-based session management. 
 
 ---
 
-## 🏗️ Architecture & Engineering
+## 📌 Overview
 
-This application was deliberately built without a heavy frontend SPA framework (like React) to showcase a deep understanding of server-side rendering, middleware pipelines, and robust backend infrastructure.
+Wanderlust is a complete MVC (Model-View-Controller) application built to handle the core functionalities of a property rental platform. It utilizes server-side rendering and a robust Node.js/Express backend to deliver a fast, responsive, and secure user experience.
 
-### 1. Backend Pipeline & State Management
-* **MVC Architecture:** Routes, logic, and data models are strictly decoupled. 
-* **Middleware Mastery:** HTTP is stateless, so `express-session` was implemented. A strict execution pipeline ensures sessions initialize *before* `passport` (for authentication) and `connect-flash` (for UI notifications).
-* **Global Error Handling:** Wrapped all asynchronous operations in custom error-handling classes. A global fallback route acts as a safety net, injecting defensive `res.locals` variables to guarantee the UI renders a friendly 500 error page even during fatal database timeouts.
+## ✨ Core Features
 
-### 2. Security & Authentication
-* **Passport.js Integration:** Implemented local strategies with salted password hashing for secure user serialization/deserialization.
-* **Modern Cloud Sessions:** Bypassed default memory storage by integrating `connect-mongo` (v6). User login states are securely and permanently saved to the MongoDB Atlas cloud.
-* **Environment Segregation:** Zero hardcoded secrets. Database URIs and Session Secrets are strictly isolated using `dotenv` locally and secured via Environment Variables in production.
-
-### 3. Frontend & UI Engineering
-* **Server-Side Rendering (SSR):** Utilized **EJS** and **EJS-Mate** to construct a DRY (Don't Repeat Yourself) layout structure, injecting dynamic views into a unified boilerplate.
-* **Utility-First Styling:** Integrated **Tailwind CSS v4** directly into the build pipeline for a highly responsive, mobile-first design without the bloat of custom CSS files.
-* **Defensive Rendering:** UI components (like navigation dropdowns) utilize strict variable checking (`locals.currUser`) to prevent the rendering engine from crashing if middleware is bypassed.
-
-### 4. Production Deployment (Render)
-* **Dynamic Environment Binding:** Engineered the server to dynamically accept Render's assigned ports (`process.env.PORT || 3000`), preventing boot timeouts.
-* **Engine Locking:** Locked the `package.json` to the strict `Node v24.12.0 LTS` environment to guarantee perfect parity between the local development machine and the cloud production server.
+* **Property Management:** Authenticated users can perform full CRUD (Create, Read, Update, Delete) operations on their own property listings.
+* **Interactive Reviews:** Users can leave ratings and comments on properties.
+* **Secure Authentication:** User registration, login, and protected routes managed via Passport.js.
+* **Persistent Cloud Sessions:** User login states are securely saved to MongoDB Atlas, keeping users logged in across server restarts.
+* **Responsive UI:** Mobile-first design implemented using Tailwind CSS.
 
 ---
 
-## 🚀 Core Functionality
+## 🛠️ Technical Stack
 
-* **Complete Property CRUD:** Authenticated users can create, read, update, and delete global property listings.
-* **Interactive Review System:** Users can leave star ratings and comments tied relationally to specific properties.
-* **Strict Authorization:** Backend route protection prevents users from editing, deleting, or altering properties and reviews they do not own.
-* **Persistent Authentication:** Users remain securely logged in across browser restarts and server redeployments via cloud cookies.
-
----
-
-## 💻 Technical Stack Overview
-
-| Category | Technologies Used |
+| Category | Technologies |
 | :--- | :--- |
-| **Environment** | Node.js (v24.12.0 LTS) |
-| **Framework** | Express.js |
+| **Backend** | Node.js (v24 LTS), Express.js |
 | **Database** | MongoDB Atlas, Mongoose ODM |
-| **Auth & Security** | Passport.js, express-session, connect-mongo (v6) |
-| **Frontend** | EJS, EJS-Mate, Tailwind CSS |
+| **Authentication** | Passport.js, Local Strategy |
+| **Session Management** | express-session, connect-mongo (v6) |
+| **Frontend** | EJS, EJS-Mate, Tailwind CSS (v4) |
 | **Deployment** | Render Cloud Hosting |
+
+---
+
+## 🏗️ Architecture & Implementation Details
+
+### Backend Pipeline & Security
+* **Middleware Structure:** Because HTTP is stateless, `express-session` is utilized to maintain state. The middleware pipeline is strictly ordered to initialize sessions before authentication (`passport`) and UI notifications (`connect-flash`).
+* **Environment Segregation:** Sensitive credentials (database URIs, session secrets) are isolated using `dotenv` locally and secured via environment variables in production.
+* **Data Security:** Implemented salted password hashing via `passport-local-mongoose` before storing user data in the database. Cookies are configured with `httpOnly: true` to prevent Cross-Site Scripting (XSS) access.
+
+### Frontend & Server-Side Rendering (SSR)
+* **Templating:** Utilized EJS and EJS-Mate to create a modular layout system, reducing code duplication and injecting dynamic views into a unified boilerplate structure.
+* **Error Handling & Fallbacks:** Asynchronous route operations are wrapped in custom error-handling functions. A global fallback route acts as a safety net, injecting default `locals` variables to ensure the UI successfully renders a friendly 500 error page during database timeouts or unexpected crashes.
+
+### Database & Deployment
+* **MongoDB Integration:** Mongoose ODM is used to enforce strict data schemas and manage relational references between Users, Listings, and Reviews.
+* **Modern Session Storage:** Integrated `connect-mongo` v6 to transition session storage from local server memory to the cloud database, ensuring session persistence.
+* **Cloud Deployment:** The application is deployed via Render. The server is configured to accept dynamically assigned deployment ports (`process.env.PORT`) and is locked to the Node `v24.12.0` engine in the `package.json` to ensure exact parity between local development and the live production environment.
